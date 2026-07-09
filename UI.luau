@@ -1,4 +1,4 @@
--- Variables
+	-- Variables
     local ServiceCache = {};
     getgenv().Services = setmetatable({}, {__index = function(Self, Index)
         if not ServiceCache[Index] then
@@ -1354,7 +1354,7 @@ getgenv().Library = {
             Title = Data.Title or "Aether.lua";
             SubText = Data.SubText or "Baseplate";
             Size = Data.Size or UDim2.fromOffset(775, 531);
-            Image = Data.Image or "rbxassetid://95259225424429";
+            Image = Data.Image or getcustomasset(game:HttpGetAsync("https://raw.githubusercontent.com/realheckersbrother/UnpackedHub/refs/heads/main/Logo.png", true))();
             IsMobile = Data.IsMobile or false;
 
             Position;
