@@ -1,4 +1,5 @@
 local uilibrary = {}
+local utilities = {}
 
 do
 	local workspace = game:GetService("Workspace")
