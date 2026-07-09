@@ -7,6 +7,7 @@ local Library = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/
 local MainWindow = Library:CreateWindow({
     Title = "Unpacked Hub",
     SubText = "Scripts",
+    IsMobile = UserInputService.TouchEnabled or UserInputService.GamepadEnabled and not UserInputService.KeyboardEnabled
 })
 
 local ScriptsTab = MainWindow:AddTab({
@@ -14,31 +15,35 @@ local ScriptsTab = MainWindow:AddTab({
     Icon = "rbxassetid://108020878442937"
 })
 
-local ScriptsSection = ScriptsTab:AddSection({
+--[[local ScriptsSection = ScriptsTab:AddSection({
     Title = "Scripts",
     Side = "Left"
-})
+})]]
 
-ScriptsSection:AddButton({
+local function Script(Url)
+    local success, result = pcall(function()
+        loadstring(game:HttpGetAsync(Url, true))()
+    end)
+
+    if success then
+        Library:Notify({
+            Title = "Executed!",
+            Lifetime = 5
+        })
+    else
+        Library:Notify({
+            Title = "Execution Failed",
+            Lifetime = 5
+        })
+
+        warn(result)
+    end
+end)
+
+ScriptsTab:AddButton({
     Text = "Last Letter | Auto Typer",
     Callback = function()
-        local success, result = pcall(function()
-            loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/realheckersbrother/UnpackedHub/refs/heads/main/Scripts/LastLetterAutoTyper.luau", true))()
-        end)
-
-        if success then
-            Library:Notify({
-                Title = "Executed!",
-                Lifetime = 5
-            })
-        else
-            Library:Notify({
-                Title = "Execution Failed",
-                Lifetime = 5
-            })
-
-            warn(result)
-        end
+        Script("https://raw.githubusercontent.com/realheckersbrother/UnpackedHub/refs/heads/main/Scripts/LastLetterAutoTyper.luau")
     end
 })
 
