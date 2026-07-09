@@ -6674,53 +6674,95 @@ do
 
 		local openereses = tweenservice:Create(menu.targetrans, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Value = 1})
 		local closeereses = tweenservice:Create(menu.targetrans, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Value = 0})
+function menu:openui()
+	menu.uiopen = true
 
-		function menu:openui()
-			menu.uiopen = true
-			menu.objects.backborder.position = newudim2(0, menu.objects.backborder.absoluteposition.x, 0, menu.objects.backborder.absoluteposition.y) -- ez fix
-			openereses:Play()
+	if menu.objects.backborder then
+		menu.objects.backborder.visible = true
+
+		menu.objects.backborder.position = newudim2(
+			0,
+			menu.objects.backborder.absoluteposition.x,
+			0,
+			menu.objects.backborder.absoluteposition.y
+		)
+	end
+
+	if openereses then
+		openereses:Play()
+	end
+end
+
+function menu:closeui()
+	menu.uiopen = false
+
+	if menu.colorpicker then
+		if menu.colorpicker.updater then
+			menu.colorpicker.updater:Disconnect()
+			menu.colorpicker.updater = nil
 		end
 
-		function menu:closeui()
-			menu.uiopen = false
+		if menu.colorpicker.outline then
+			menu.colorpicker.outline.visible = false
+		end
 
-			do
-				if menu.colorpicker.updater then
-					menu.colorpicker.updater:Disconnect()
+		if menu.colorpicker.transparencyselection then
+			menu.colorpicker.transparencyselection.visible = false
+		end
+
+		if menu.colorpicker.hueselection then
+			menu.colorpicker.hueselection.visible = false
+		end
+
+		if menu.colorpicker.pickerselection then
+			menu.colorpicker.pickerselection.visible = false
+		end
+
+		menu.isacolorpickeropen = false
+
+		if menu.colorpicker.outofboundscloseconnection then
+			menu.colorpicker.outofboundscloseconnection:Disconnect()
+			menu.colorpicker.outofboundscloseconnection = nil
+		end
+
+		if menu.colorpicker.fakeDropdown then
+			local this = menu.colorpicker.fakeDropdown
+			local myflag = menu.colorpicker.animationSelection
+
+			this.dropdownopened = false
+			this.icontext.text = "-"
+
+			menu.isadropdownopen = false
+
+			for i, v in next, this.valuecontainer do
+				if v.selectionoutline then
+					v.selectionoutline.visible = false
+					v.selectionoutline.position = v.selectionoutline.position
+					v.selectionoutline.size = v.selectionoutline.size
 				end
 
-				menu.colorpicker.outline.visible = false
-				menu.colorpicker.transparencyselection.visible = false
-				menu.colorpicker.hueselection.visible = false
-				menu.colorpicker.pickerselection.visible = false
-				menu.isacolorpickeropen = false
+				if v.value and myflag and myflag.value and myflag.value[v.value] then
+					local val = myflag.value[v.value]
 
-				if menu.colorpicker.outofboundscloseconnection then
-					menu.colorpicker.outofboundscloseconnection:Disconnect()
-					menu.colorpicker.outofboundscloseconnection = nil
-				end
-
-				do
-					local myflag = menu.colorpicker.animationSelection
-					local this = menu.colorpicker.fakeDropdown
-					this.dropdownopened = false
-					this.icontext.text = (this.dropdownopened == true) and "-" or "+"
-					menu.isadropdownopen = false
-					for i, v in next, (this.valuecontainer) do
-						v.selectionoutline.visible = this.dropdownopened
-						v.selectionoutline.position = v.selectionoutline.position
-						v.selectionoutline.size = v.selectionoutline.size
-						if v.value and myflag.value[v.value] then
-							local val = myflag.value[v.value]
-							this.textrecord[v.value].color = (val == true) and menu.accent or Color3.fromRGB(255, 255, 255)
-						end
+					if this.textrecord[v.value] then
+						this.textrecord[v.value].color =
+							(val == true)
+							and menu.accent
+							or Color3.fromRGB(255, 255, 255)
 					end
 				end
 			end
-
-			closeereses:Play()
 		end
+	end
 
+	if menu.objects.backborder then
+		menu.objects.backborder.visible = false
+	end
+
+	if closeereses then
+		closeereses:Play()
+	end
+end
 		menu:closeui()
 
 		return menu
