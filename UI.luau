@@ -1,5 +1,6 @@
 local uilibrary = {}
 local utilities = {}
+local Drawingv2s = {}
 
 do
 	local workspace = game:GetService("Workspace")
@@ -18,6 +19,7 @@ do
 	local abs = math.abs
 	local string = string
 	local table = table
+    local Drawingv2 = Drawing
 
 	do
 		local HttpService = game:GetService("HttpService")
